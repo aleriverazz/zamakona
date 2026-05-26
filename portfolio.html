@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <style>
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* =============================================
+       ROOT VARIABLES
+       Change colors, fonts, and spacing here.
+       ============================================= */
+    :root {
+      --bg: #FFFFFF;
+      --text: #000000;
+      --font: "Inter", Inter, sans-serif;
+      --font-weight: 300;
+      --font-size-base: 13px;
+      --menu-height: 40px;
+      --col-gap: 32px;
+      --page-pad: 24px;
+    }
+
+    /* =============================================
+       BODY
+       ============================================= */
+    body {
+      font-family: var(--font);
+      font-weight: var(--font-weight);
+      font-size: var(--font-size-base);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       LINKS
+       ============================================= */
+    a {
+      color: var(--text);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    a:hover {
+      opacity: 0.5;
+    }
+
+    /* =============================================
+       BUTTON RESET
+       ============================================= */
+    button {
+      background: none;
+      border: none;
+      font-family: var(--font);
+      font-weight: var(--font-weight);
+      font-size: var(--font-size-base);
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+    button:hover {
+      opacity: 0.5;
+    }
+
+    /* =============================================
+       HIDDEN UTILITY CLASS
+       ============================================= */
+    .hidden {
+      display: none !important;
+    }
+
+    /* =============================================
+       MENU CONTAINER
+       ============================================= */
+    #menu-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--menu-height);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 0 var(--page-pad);
+      background: var(--bg);
+      border-bottom: 1px solid #000;
+      z-index: 1000;
+    }
+
+    .menu-label {
+      letter-spacing: 0.15em;
+      font-size: 11px;
+      opacity: 0.4;
+      margin-right: 8px;
+    }
+
+    /* =============================================
+       PAGE WRAPPER
+       ============================================= */
+    .page {
+      padding-top: calc(var(--menu-height) + 20px);
+      padding-left: var(--page-pad);
+      padding-right: var(--page-pad);
+      padding-bottom: 40px;
+      min-height: 100vh;
+    }
+
+    /* =============================================
+       THREE-COLUMN GRID
+       ============================================= */
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--col-gap);
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* =============================================
+       COLUMN HEADINGS
+       ============================================= */
+    .col-heading {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #ffffff;
+      padding-bottom: 6px;
+    }
+
+    /* =============================================
+       PARAGRAPH SPACING
+       ============================================= */
+    .col p, .col li {
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    /* =============================================
+       SCROLLABLE COLUMN
+       ============================================= */
+    .col-scroll {
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .col-scroll::-webkit-scrollbar { width: 4px; }
+    .col-scroll::-webkit-scrollbar-track { background: #f0f0f0; }
+    .col-scroll::-webkit-scrollbar-thumb { background: #aaa; }
+
+    /* =============================================
+       INDEX NAV LINKS
+       ============================================= */
+    .index-nav {
+      margin-top: 20px;
+      display: flex;
+      gap: 16px;
+    }
+
+    /* =============================================
+       PROJECT LIST
+       ============================================= */
+    .project-list {
+      list-style: none;
+    }
+    .project-list li {
+      margin-bottom: 8px;
+    }
+    .project-list a {
+      display: block;
+      padding: 4px 0;
+    }
+    .project-list .proj-num {
+      opacity: 0.4;
+      margin-right: 6px;
+      font-size: 10px;
+    }
+
+    /* =============================================
+       COMING SOON PROJECTS
+       ============================================= */
+    .proj-coming-soon {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .proj-coming-soon-wrap {
+      position: relative;
+      display: block;
+      padding: 4px 0;
+      pointer-events: none;
+    }
+    .proj-coming-soon-wrap::after {
+      content: "Coming soon";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    #project-list li.proj-coming-soon-li {
+      pointer-events: auto;
+    }
+    #project-list li.proj-coming-soon-li:hover .proj-coming-soon-wrap::after {
+      opacity: 0.5;
+    }
+
+    /* =============================================
+       PROJECT PLACEHOLDER IMAGES
+       ============================================= */
+    .proj-img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #e8e8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #999;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    /* =============================================
+       CONTACT LIST
+       ============================================= */
+    .contact-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+    .contact-list li {
+      margin-bottom: 12px;
+    }
+    .contact-list .contact-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* =============================================
+       CV EDUCATION LIST
+       ============================================= */
+    .edu-list {
+      list-style: none;
+    }
+    .edu-list li {
+      margin-bottom: 16px;
+      border-left: 1px solid #ccc;
+      padding-left: 10px;
+    }
+    .edu-list .edu-year {
+      font-size: 10px;
+      opacity: 0.4;
+      letter-spacing: 0.1em;
+    }
+
+    /* =============================================
+       PAGE TITLE
+       ============================================= */
+    .page-title {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.3;
+      margin-bottom: 28px;
+    }
+
+    /* =============================================
+       PROJECT HOVER PREVIEW — index col 2
+       ============================================= */
+    #proj-hover-icon {
+      margin-top: auto;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+    }
+    #proj-hover-icon.visible {
+      opacity: 1;
+    }
+    #proj-hover-preview {
+      width: 350px;
+      height: 260px;
+      object-fit: cover;
+      filter: grayscale(100%) blur(2px); contrast(200%); 
+     display: block;
+    }
+    #proj-hover-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.4;
+    }
+
+    /* =============================================
+       MEDIA WRAPPER
+       ============================================= */
+    .proj-media-wrap {
+      position: relative;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    .proj-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .proj-video-ratio {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background: #000;
+    }
+    .proj-video-ratio iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .proj-expand-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      border: none;
+      font-size: 14px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      text-decoration: none;
+      padding: 0;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .proj-media-wrap:hover .proj-expand-btn {
+      opacity: 1;
+    }
+
+    /* =============================================
+       LIGHTBOX OVERLAY
+       ============================================= */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.active {
+      display: flex;
+    }
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      display: block;
+      cursor: default;
+    }
+    #lightbox-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+      text-decoration: none;
+      line-height: 1;
+      opacity: 0.7;
+    }
+    #lightbox-close:hover {
+      opacity: 1;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       MENU
+       ============================================= -->
+  <nav id="menu-container" aria-label="Main navigation">
+    <span class="menu-label">zamaKona</span>
+    <button id="btn-land">HOME</button>
+    <button id="btn-back">BACK</button>
+  </nav>
+
+
+  <!-- =============================================
+       INDEX PAGE
+       ============================================= -->
+  <div id="index-page" class="page hidden">
+    <p class="page-title"></p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p>
+          Alejandra Rivera Zamacona &lt;3<br/>
+          Barcelona + Tijuana
+        </p>
+        <div class="index-nav">
+          <a id="link-cv" href="#" aria-label="View CV">CV</a>
+          <button id="btn-contact" aria-label="View Contact page">Contact</button>
+        </div>
+      </div>
+
+      <div class="col" style="display:flex; flex-direction:column; min-height:70vh;">
+        <p class="col-heading"></p>
+        <p>Architect, designer, and artist — border girl at heart.</p>
+        <p>I blend web development, data visualization, and creative direction with AI agents and automation.</p>
+        <p>Based between Barcelona and Tijuana. Led multidisciplinary teams across Europe, North America, and South America.</p>
+
+        <div id="proj-hover-icon" aria-hidden="true">
+          <img id="proj-hover-preview" src="" alt="" />
+          <span id="proj-hover-label"></span>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p>PROJECTS</p>
+        <div class="col-scroll">
+          <ul class="project-list" id="project-list">
+            <li><a href="#" data-project="1"  data-label="Fog Harvest"                data-image="images/projects/fog/Screenshot 2026-05-24 193120.png"><span class="proj-num">01</span>2026 — Fog Harvest — Tijuana, Mx / Barcelona, Sp</a></li>
+            <li class="proj-coming-soon-li"><span class="proj-coming-soon-wrap"><span class="proj-coming-soon"><span class="proj-num">02</span>2026 — WIP: Web Design — Cork, Ireland / Barcelona, Sp</span></span></li>
+            <li class="proj-coming-soon-li"><span class="proj-coming-soon-wrap"><span class="proj-coming-soon"><span class="proj-num">03</span>2026 — WIP: Monster Fantasies — Barcelona, Sp</span></span></li>
+            <li class="proj-coming-soon-li"><span class="proj-coming-soon-wrap"><span class="proj-coming-soon"><span class="proj-num">04</span>2026 — MDEF Fest Museography — Barcelona, Sp</span></span></li>
+            <li><a href="#" data-project="5"  data-label="Craft and Object Research"  data-image="images/projects/senegal/_DSC7280.JPG"><span class="proj-num">05</span>2026 — Craft and Object Research — Senegal</a></li>
+            <li><a href="#" data-project="6"  data-label="Echo of Mind"               data-image="images/projects/echo/echo-of-mind-9.jpg"><span class="proj-num">06</span>2026 — Echo of Mind — Barcelona, Sp</a></li>
+            <li><a href="#" data-project="7"  data-label="Material & Graphic Research" data-image="images/projects/material/IMG_6811.JPG"><span class="proj-num">07</span>2026 — Material & Graphic Research — Barcelona, Sp</a></li>
+            <li><a href="#" data-project="8"  data-label="Mochi"                       data-image="images/projects/mochi/01.jpeg"><span class="proj-num">08</span>2026 — Mochi — Barcelona, Sp</a></li>
+            <li><a href="#" data-project="9"  data-label="Analysis of a Heartbreak"   data-image="images/projects/aoah/01-NOV.jpg"><span class="proj-num">09</span>2025 — Analysis of a Heartbreak — Barcelona, Sp</a></li>
+            <li><a href="#" data-project="10" data-label="Nuevo Centro de Gobierno"   data-image="images/projects/centr-gob/01-01.jpg"><span class="proj-num">10</span>2025 — Nuevo Centro de Gobierno — Tecate, Mx</a></li>
+            <li><a href="#" data-project="11" data-label="Proposal: Mexico Pavilion"  data-image="images/projects/pav-comp/01_pages-to-jpg-0004.jpg"><span class="proj-num">11</span>2024 — Proposal: Mexico Pavilion — México</a></li>
+            <li><a href="#" data-project="12" data-label="A Story of Fluid Kinship"   data-image="images/projects/mask/06_page-0004.jpg"><span class="proj-num">12</span>2024 — A Story of Fluid Kinship — Tijuana, Mx</a></li>
+            <li><a href="#" data-project="13" data-label="AI Architecture Studies"    data-image="images/projects/arch-ai/00.png"><span class="proj-num">13</span>2023 — AI Architecture Studies — Tijuana, Mx</a></li>
+            <li><a href="#" data-project="14" data-label="INTIMA"                     data-image="images/projects/intima/03_page-0002.jpg"><span class="proj-num">14</span>2021 — INTIMA — Venice, Italy <span style="font-style:italic;color:#585858;font-size:0.9em;">(Virtual)</span></a></li>
+            <li><a href="#" data-project="15" data-label="YEU"                        data-image="images/projects/yeu/04_page-0002.jpg"><span class="proj-num">15</span>2021 — YEU — Venice, Italy <span style="font-style:italic;color:#585858;font-size:0.9em;">(Virtual)</span></a></li>
+            <li><a href="#" data-project="16" data-label="VINVISIBLE"                 data-image="images/projects/vinvisible/05_page-0002.jpg"><span class="proj-num">16</span>2021 — VINVISIBLE — Venice, It <span style="font-style:italic;color:#585858;font-size:0.9em;">(Virtual)</span></a></li>
+            <li><a href="#" data-project="17" data-label="TIOC 2.0"                   data-image="images/projects/tioc-2/01.jpg"><span class="proj-num">17</span>2019-21 — TIOC 2.0 — Tijuana, Mx</a></li>
+            <li><a href="#" data-project="18" data-label="Estación Chabacano"         data-image="images/projects/metro/07_page-0002.jpg"><span class="proj-num">18</span>2019 — Estación Chabacano — Ciudad de México</a></li>
+            <li><a href="#" data-project="19" data-label="Architecture Visualization" data-image="images/projects/arc-vis/01 LATERAL.png"><span class="proj-num">19</span>2018-25 — Architecture Vis — Tijuana, Mx / Cordoba, Ar</a></li>
+            <li><a href="#" data-project="20" data-label="TIOC"                       data-image="images/projects/tioc/02_page-0000.jpg"><span class="proj-num">20</span>2017-18 — TIOC — Venice, Italy</a></li>
+            <li><a href="#" data-project="21" data-label="Casa Costa Ligur"           data-image="images/projects/casa-costaligur/10.png"><span class="proj-num">21</span>2018 — Casa Costa Ligur — Tijuana, Mx</a></li>
+            <li><a href="#" data-project="22" data-label="Architectural Drafting"     data-image="images/projects/arch-draft/draft-04.png"><span class="proj-num">22</span>2020 — Architectural Drafting — Tijuana, Mx</a></li>
+
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- =============================================
+       CV PAGE
+       ============================================= -->
+  <div id="cv-page" class="page hidden">
+    <p class="page-title">CV</p>
+    <div class="three-col">
+
+      <div class="col">
+        <img src="images/portrait.jpeg" alt="Alejandra Rivera Zamacona" style="width:200px; height:200px; object-fit:cover; display:block; margin-bottom:16px;" />
+        <p><strong>Alejandra C. Rivera Zamacona</strong>
+        <button onclick="showSection('contact', true)" style="font-style:italic; font-size:11px; color:#888;">(Contact)</button>
+        </p>
+        <p>Born 1995, Tijuana, México.</p>
+        <p>Currently finishing a Master in Design for Emergent Futures at IAAC and Elisava (Barcelona), I'm a 
+          design researcher and architect who blends AI, data visualization, and web development with the 
+          materiality of the built environment — open to collaborations, research, and work opportunities. </p>
+        <p>Nationality: Mexican<br>Languages: Spanish, English</p>
+      </div>
+
+      <div class="col">
+        <p class="col-heading">Education</p>
+        <ul class="edu-list">
+          <li>
+            <span class="edu-year">2025 – 2026</span>
+            <p>Master in Design for Emergent Futures<br>ELISAVA - Institute for Advanced Architecture of Catalonia (IAAC), Barcelona</p>
+          </li>
+          <li>
+            <span class="edu-year">2015 – 2020</span>
+            <p>Bachelor of Architecture<br>Universidad Iberoamericana CDMX-Tijuana, Tijuana, México</p>
+          </li>
+          <li>
+            <span class="edu-year">2018</span>
+            <p>Academic Exchange<br>Universidad Católica de Córdoba, Córdoba, Argentina</p>
+          </li>
+          <li>
+            <span class="edu-year">2013 – 2015</span>
+            <p>Introduction Program to Architecture and Design<br>Universidad Autónoma de Baja California, Tijuana, México</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <p class="col-heading">Work Experience</p>
+        <div class="col-scroll">
+          <p>
+            <strong>2022 – 2026</strong><br>
+            Creative Director & Project Coordinator<br>
+            Estudio Santander&Lunaa, México<br>
+            <span style="font-style:italic;color:#888;font-size:0.9em;">I lead creative direction, conceptual development, and visual design for architectural and urban projects — including the Mexico Pavilion for the 2025 Venice Architecture Biennale Competition and visual identity systems for studio publications. I also manage logistics, PR, and production phases, produce 2D/3D technical drawings and models, and automate workflows using AI.</span>
+          </p>
+          <p>
+            <strong>2021 – Present</strong><br>
+            Web Developer & Graphic Designer<br>
+            Freelancer, México<br>
+            <span style="font-style:italic;color:#888;font-size:0.9em;">Developed web solutions, data visualizations, and graphic design for editorial clients, architectural competitions, and presentations. Built internal storage automation and data visualization systems for architecture firms.</span>
+          </p>
+          <p>
+            <strong>2025</strong><br>
+            Head Professor<br>
+            Escuela Libre de Arquitectura, Tijuana, México<br>
+            <span style="font-style:italic;color:#888;font-size:0.9em;">Taught architecture studios and theory courses focused on creative development, presentation design, and editorial design. Supervised student projects from research through physical model production and final presentations.</span>
+          </p>
+          <p>
+            <strong>2021 – 2023</strong><br>
+            Assistant Professor<br>
+            Universidad Iberoamericana, Tijuana, México<br>
+            <span style="font-style:italic;color:#888;font-size:0.9em;">Assistant Professor at Architecture Studio classes, supporting students in design development, research and graphic production, and final presentations. Also led workshops on design.</span>
+          </p>
+          <p>
+            <strong>2024</strong><br>
+            Logistics & Inventory Coordinator<br>
+            <span style="font-style:italic;color:#888;font-size:0.9em;">Designed and maintained inventory system for hundreds of furniture and educational assets. Developed protocols for receiving, storage, and distribution. Managed budgets and implementation timelines using advanced Excel spreadsheets.</span>
+          </p>
+          <p>
+            <strong>2017–2018 & 2019–2021</strong><br>
+            Creative Director & Research Lead<br>
+            THINK TANK TIOC, México<br>
+            <span style="font-style:italic;color:#888;font-size:0.9em;">Directed creative and editorial strategy for an urban research lab specializing in speculative narratives and emergent technologies, with work presented at Venice Architecture Biennale 2018 & 2021. Key projects include creative direction for CITY X (RMIT University) and speculative design proposals for Xiong'an New Area and Malaysia Biennial, plus visual methodologies translating research into diagrams and data visualizations.</span>
+          </p>
+          <p>
+            <strong>2018</strong><br>
+            Architect Intern<br>
+            A001 Taller de Arquitectura, México City<br>
+            <span style="font-style:italic;color:#888;font-size:0.9em;">Developed architectural drawings and 3D models for diverse scales—from urban analysis to detailed interior design. Projects included Mexico City Metro analysis and urban planning studies.</span>
+          </p>
+          <p>
+            <strong>Continuing Education & Certifications</strong><br>
+            ◉ 2020 — Bio-Inspired Design<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">Lead by: Benhaz Farahi, Digital Futures</span><br>
+            ◉ 2018 — Urban Design Workshop<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">Lead by: A001 Taller de Arquitectura</span><br>
+            ◉ 2018 — Documentary Photography<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">Lead by: STUDIO DE LUZ, Tijuana México</span>
+          </p>
+          <p>
+            <strong>Exhibitions</strong><br>
+            ◉ 2021 — La Biennale di Architettura di Venezia<br>
+            Biennale Sessions: CITY X Project, Organized by RMIT<br>
+            Virtual due to Covid-19<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">TIOC Urban Research. Presented speculative urban research and narrative architecture at Venice Architecture Biennale, Sessions program.</span><br>
+            ◉ 2018 — La Biennale di Architettura di Venezia<br>
+            Biennale Sessions: 100YC Medinni, Organized by RMIT<br>
+            In-Person Presentation, Venice, Italy<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">TIOC Urban Research. Presented speculative urban research and narrative architecture at Venice Architecture Biennale, Sessions program.</span><br>
+            ◉ 2018 — San Diego: The Architecture of Four Ecologies<br>
+            La Jolla Historical Society exhibition, San Diego, CA, USA<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">(September 2018 to January 2019)</span><br>
+            ◉ 2018 — Goethe Institut<br>
+            Weltstadt: San Diego-Tijuana, Tijuana, Mexico<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">TIOC Urban Research. Presented speculative urban research and narrative.</span><br>
+            ◉ 2018 — IMPLAN Tijuana<br>
+            Urban Workshop – Project Proposal Presentation, Tijuana, Mexico<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">TIOC Urban Research. Presented speculative urban research and narrative.</span><br>
+            ◉ 2017 — Malaysia Biennial 100YC<br>
+            Organized by RMIT, Virtual<br>
+            <span style="font-style:italic;color:#585858;font-size:0.9em;">TIOC Urban Research. 100YC Medini Iskandar, coordinated by RMIT University and others, is a speculative proposal for a 100-year-old new city located in Medini, Malaysia.</span>
+          </p>
+          <p>
+            <strong>Publications</strong><br>
+            ◉ 2018 — San Diego: The Architecture of Four Ecologies, La Jolla Historical Society<br>
+            ◉ 2018 — Biennial Report 2018, IMPLAN Tijuana
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- =============================================
+       CONTACT PAGE
+       ============================================= -->
+  <div id="contact-page" class="page hidden">
+    <p class="page-title">Contact</p>
+    <div class="three-col">
+      <div class="col">
+        <p class="col-heading">Get in touch</p>
+        <ul class="contact-list">
+          <li>
+            <span class="contact-label">Email</span>
+            <a href="mailto:aleriverazz@outlook.com">aleriverazz@outlook.com</a>
+          </li>
+          <li>
+            <span class="contact-label">GitHub</span>
+            <a href="https://github.com/aleriverazz" target="_blank" rel="noopener">github.com/aleriverazz</a>
+          </li>
+          <li>
+            <span class="contact-label">LinkedIn</span>
+            <a href="https://linkedin.com/in/alejandra-rivera-zamacona-610a37187" target="_blank" rel="noopener">linkedin.com/in/alejandra-rivera-zamacona-610a37187</a>
+          </li>
+          <li>
+            <span class="contact-label">Instagram</span>
+            <a href="https://instagram.com/zama.kona" target="_blank" rel="noopener">@zama.kona</a>
+          </li>
+          <li>
+            <span class="contact-label">Tattoo Work</span>
+            <a href="https://instagram.com/riveraazz" target="_blank" rel="noopener">@riveraazz</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col">
+        <p class="col-heading">Location</p>
+        <p>
+          BARCELONA, Catalunya, Spain<br><br>
+          TIJUANA, Baja California, Mexico
+        </p>
+      </div>
+      <div class="col">
+        <p class="col-heading">Availability</p>
+        <p>Currently available for freelance and collaborative projects.<br>Response time: 1–2 business days.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 1: Fog Harvest ──────────────────── -->
+  <div id="project1-page" class="page hidden">
+    <p class="page-title">Fog Harvest</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/fog/fogharvest_architecture_diagram.svg" alt="Fog Harvest — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/fog/Screenshot 2026-05-24 193120.png" alt="Fog Harvest — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/fog/Screenshot 2026-05-24 193148.png" alt="Fog Harvest — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Fog Harvest</strong></p>
+        <p>This project, developed in collaboration with Estudio Santander&Lunaa, is a work-in-progress
+          web-based simulation tool for air and fog harvesting that visualises real-time wind, humidity,
+          and terrain data using OpenMeteo APIs, MapTiler maps, and a 3D wind-tunnel model powered by
+          WebGL2. The current implementation allows users to upload custom 3D models (GLB/GLTF/OBJ/STL)
+          and analyse airflow via a particle-based simulation, but it suffers from API failures
+          (IP-based blocking/CORS), performance lag (too many particles, inefficient wind field
+          interpolation), and rendering issues (WebGL2 not always supported, MapTiler key instability).</p>
+        <p>Next steps include migrating to browser geolocation + the OpenMeteo forecast endpoint, adding
+          WebGL2 fallbacks, reducing particle count, implementing a Leaflet backup map, and optimising
+          the simulation with web workers and Draco compression to ensure smooth, reliable performance
+          across devices.</p>
+        <p>Website: <a href="https://aleriverazz.github.io/air-and-fogharvest/" target="_blank">Fog Harvesting</a></p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Tijuana, Mx / Barcelona, ES</p>
+        <p><strong>Office</strong><br>Estudio Santander&Lunaa</p>
+        <p><strong>Role</strong><br>Web Developer</p>
+        <p><strong>Tools</strong><br>AI Models, WebGL2, OpenMeteo APIs</p>
+        <p><strong>Status</strong><br>Ongoing</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 2: Web Design ────────────────────── -->
+  <div id="project2-page" class="page hidden">
+    <p class="page-title">Web Design</p>
+    <div class="three-col">
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-img-placeholder">Image coming soon</div>
+          <div class="proj-img-placeholder">Image coming soon</div>
+          <div class="proj-img-placeholder">Image coming soon</div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Website Design</strong></p>
+        <p>Tattoo Studio required a modern, conversion-focused shopping website to sell their products
+          online. They currently have no digital presence (or an outdated one) and need a platform that
+          builds trust, simplifies the checkout process, and reflects their brand identity.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Barcelona, ES / Cork, IE</p>
+        <p><strong>Role</strong><br>Web Developer</p>
+        <p><strong>Tools</strong><br>JavaScript, HTML, CSS</p>
+        <p><strong>Client</strong><br>Tattoo Studio</p>
+        <p><strong>Status</strong><br>Ongoing</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 3: Monster Fantasies ────────────── -->
+  <div id="project3-page" class="page hidden">
+    <p class="page-title">Monster Fantasies</p>
+    <div class="three-col">
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-img-placeholder">Image coming soon</div>
+          <div class="proj-img-placeholder">Image coming soon</div>
+          <div class="proj-img-placeholder">Image coming soon</div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Monster Fantasies</strong></p>
+        <p>From pop culture to urban theories — how can we fabricate new realities from the potential of
+          the abnormal?</p>
+        <p>Monsters always return. But where do they come from? Anxieties about a broken future permeate
+          pop culture, which has always anticipated what is globally happening. Monsters hide between us,
+          present but unseen. This project explores the collision of digital, physical, and geographical
+          edges — where are monsters being manufactured?</p>
+        <p>It investigates the fantasies of horror-rooted cities, where dark counter-cultural spaces
+          signal new possibilities. Breaking from Mark Fisher's proposal, there are still places where
+          you can dream — not outside neoliberalism, but on its edges.</p>
+        <p>Made at IAAC-Elisava MDEF Masters Project.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Barcelona, Spain</p>
+        <p><strong>Role</strong><br>Master Thesis: Research and Design Development</p>
+        <p><strong>Tools</strong><br>Ongoing</p>
+        <p><strong>Status</strong><br>Ongoing</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 4: MDEF Fest Museography ────────── -->
+  <div id="project4-page" class="page hidden">
+    <p class="page-title">MDEF Fest Museography</p>
+    <div class="three-col">
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-img-placeholder">Project 4 — Image 1</div>
+          <div class="proj-img-placeholder">Project 4 — Image 2</div>
+          <div class="proj-img-placeholder">Project 4 — Image 3</div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>MDEF Fest Museography</strong></p>
+        <p>Description coming soon.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Barcelona, ES</p>
+        <p><strong>Role</strong><br>Team Leader</p>
+        <p><strong>Tools</strong><br>Ongoing</p>
+        <p><strong>Team</strong><br>MDEF Class</p>
+        <p><strong>Status</strong><br>Ongoing</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 5: Craft and Object Research ────────── -->
+  <div id="project5-page" class="page hidden">
+    <p class="page-title">Craft and Object Research</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC7280.JPG" alt="Craft and Object Research — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC7308.JPG" alt="Craft and Object Research — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC7318.JPG" alt="Craft and Object Research — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC7417.JPG" alt="Craft and Object Research — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC7852.JPG" alt="Craft and Object Research — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC7897.JPG" alt="Craft and Object Research — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC7924.JPG" alt="Craft and Object Research — Image 7" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC8323.JPG" alt="Craft and Object Research — Image 8" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/senegal/_DSC8333.JPG" alt="Craft and Object Research — Image 9" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Craft and Object Research</strong></p>
+        <p>A fieldwork research trip to Senegal investigating the intersection of handcraftsmanship,
+          cultural dynamics, and social structures. The inquiry focused on local making practices,
+          material knowledge transmission, and community-led production systems. By engaging directly
+          with artisans and observing daily social interactions, the research explored how traditional
+          crafts embody collective values, negotiate contemporary pressures, and suggest alternative
+          models for emergent futures. Key insights inform design strategies rooted in situated knowledge,
+          relational ecologies, and resilient socio-cultural infrastructures.</p>
+        <p>Pictures by Fab Lab Barcelona as part of MDEF 2026.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Senegal</p>
+        <p><strong>Role</strong><br>Student/Researcher</p>
+        <p><strong>Tools</strong><br>Hands on Workshop Researcher</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 6: Echo of Mind ──────────────────── -->
+  <div id="project6-page" class="page hidden">
+    <p class="page-title">Echo of Mind</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/echo/echo-of-mind-9.jpg" alt="Echo of Mind — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/echo/echo-of-mind-1.jpg" alt="Echo of Mind — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/echo/ECHO-OF-MIND DEVICE FRONT 2-2.jpg" alt="Echo of Mind — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/echo/echo-of-mind-14-system-diagram.jpg" alt="Echo of Mind — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/echo/echo-of-mind-8.jpg" alt="Echo of Mind — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/echo/echo-of-mind-6.jpg" alt="Echo of Mind — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Echo of Mind</strong></p>
+        <p>Echo of Mind — Collective Archive is a web-based speculative interface that explores human
+          connection through a subconscious state. The project positions itself as a collective archive,
+          inviting users into a liminal space where memory, emotion, and shared experience converge.
+          With a minimalist, atmospheric presentation and a cryptic reference to "Connecting to Pi…",
+          the interface suggests a bridge between the rational and the intuitive, the individual and the
+          collective. The project probes how subconscious landscapes can be collectively navigated,
+          documented, and reanimated—raising questions about what it means to share an interior world.</p>
+        <p>Made at Fab Lab Barcelona as part of MDEF 2026.</p>
+        <p>Project Page: <a href="https://hannahpeevey254.github.io/ECHO-OF-MIND/" target="_blank">Echo of Mind</a></p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Barcelona, Spain</p>
+        <p><strong>Role</strong><br>Web Developer / Code Contributor</p>
+        <p><strong>Team</strong><br>Hannah Peevey, Antonio Garfe</p>
+        <p><strong>Tools</strong><br>Raspberry Pi, Python, HTML, CSS, JavaScript, AI LLM Model</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 7: Material & Graphic Research ───── -->
+  <div id="project7-page" class="page hidden">
+    <p class="page-title">Material & Graphic Research</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/material/IMG_6811.JPG" alt="Material & Graphic Research — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/material/IMG_6822.JPG" alt="Material & Graphic Research — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/material/IMG_6825.JPG" alt="Material & Graphic Research — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/material/01.jpeg" alt="Material & Graphic Research — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/material/02.jpeg" alt="Material & Graphic Research — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/material/03.jpeg" alt="Material & Graphic Research — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/material/04.jpeg" alt="Material & Graphic Research — Image 7" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Material & Graphic Research</strong></p>
+        <p>An investigation into the intersection of sustainable biomaterials and risographic printing
+          techniques. This research explores how bio-based inks, papers, and substrates can be integrated
+          with the distinctive layering, texture, and color registry of risography. Through material
+          experimentation and print tests, the work examines questions of ecological responsibility,
+          tactile quality, and visual expression—seeking alternatives to conventional petrochemical-based
+          print processes while preserving the idiosyncratic charm of risograph output.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Barcelona, Spain</p>
+        <p><strong>Role</strong><br>Research</p>
+        <p><strong>Tools</strong><br>Bio-based inks, papers, substrates, riso printing</p>
+        <p><strong>Status</strong><br>Ongoing</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 8: Mochi ────────────── -->
+  <div id="project8-page" class="page hidden">
+    <p class="page-title">Mochi</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mochi/01.jpeg" alt="Mochi — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mochi/02.jpeg" alt="Mochi — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mochi/DOC 01.png" alt="Mochi — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mochi/DOC 02.png" alt="Mochi — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mochi/DOC 03png.png" alt="Mochi — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mochi/DOC 04.png" alt="Mochi — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Mochi</strong></p>
+        <p>Mochi is a recreation of a nostalgic form — the Tamagotchi — but reframed as a mirror. Instead
+          of teaching you to care for a creature, Mochi reflects back how you care for yourself. The
+          neglect patterns, the check-ins, the feeding and sleeping inputs are proxies for your own
+          relationship with rest, nourishment, and attention. It sits at the intersection of physical
+          computing, critical design, and the question of what technology asks of us emotionally.</p>
+        <p>Made at Fab Lab Barcelona as part of MDEF 2026.</p>
+        <p>Website: <a href="https://agneseraimondii.github.io/mochi2/" target="_blank">Mochi Project</a></p>
+        <p>Repository: <a href="https://github.com/hannahpeevey254/MOCHI-PET" target="_blank">Mochi Repo</a></p>
+        <p>HackMd Document: <a href="https://hackmd.io/@hannahpeevey254/mochi" target="_blank">Mochi HackMd</a></p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2026</p>
+        <p><strong>Location</strong><br>Barcelona, ES</p>
+        <p><strong>Role</strong><br>Design</p>
+        <p><strong>Tools</strong><br>Arduino IDE, Claude AI</p>
+        <p><strong>Team</strong><br>Hannah Peevey, Agnese Raimondi, me</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 9: Analysis of a Heartbreak ──────── -->
+  <div id="project9-page" class="page hidden">
+    <p class="page-title">Analysis of a Heartbreak</p>
+    <div class="three-col">
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <div class="proj-video-ratio">
+              <iframe
+                src="https://player.vimeo.com/video/1133598207?h=3e6ac79cb2&badge=0&autopause=0&player_id=0&app_id=58479"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                title="Analysis of a Heartbreak">
+              </iframe>
+            </div>
+
+                      <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/aoah/full-text.png" alt="Analysis of a Heartbreak — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Analysis of a Heartbreak</strong></p>
+        <p>"my brain is a haunted archive of useless information"</p>
+        <p>Many people question how we deal with intimacy in the digital age. But rather than this,
+          Analysis of a heartbreak, a personnel inquiry, questions, how do we deal with a heartbreak in a
+          Post COVID world? Because what can even be more intimate than the silence and the absence not in
+          death, but in life with someone once you shared a life together?</p>
+        <p>I find myself questioning what constructs an intimate bond with someone? What is love in a
+          neoliberal world? As Zizek describes it, "love is directed toward one person above all others,
+          not a universal feeling."</p>
+        <p>And, really, can an IA bot help go through it all?</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2025</p>
+        <p><strong>Location</strong><br>Barcelona, Spain</p>
+        <p><strong>Role</strong><br>Researcher</p>
+        <p><strong>Tools</strong><br>AI Model, Adobe Ps, Ai, Id, Excel, CapCut</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 10: Nuevo Centro de Gobierno ─────── -->
+  <div id="project10-page" class="page hidden">
+    <p class="page-title">Nuevo Centro de Gobierno</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/centr-gob/00-01.gif" alt="Nuevo Centro de Gobierno — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/centr-gob/00-02.gif" alt="Nuevo Centro de Gobierno — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/centr-gob/00-03.gif" alt="Nuevo Centro de Gobierno — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/centr-gob/00-04.gif" alt="Nuevo Centro de Gobierno — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/centr-gob/00-05.gif" alt="Nuevo Centro de Gobierno — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Nuevo Centro de Gobierno</strong></p>
+        <p>A conceptual urban proposal transforming approximately 22 hectares of fragmented public land
+          into a civic-ecological system. The project reimagines water as urban infrastructure linking
+          ecologies with the city and its citizens. The riparian area serves as the structural spine of
+          the public space system, featuring shaded pedestrian paths designed for safety and thermal
+          comfort during Tecate's hot summers. The civic center, strategically positioned between parks,
+          incorporates water elements that regulate microclimate and enhance comfort. By reconfiguring
+          the relationship between the river and the city, the proposal activates local economies,
+          community cohesion, and key ecological functions, consolidating a new urban center as both a
+          dorsal spine and a meeting ground for inclusive urban life.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2025</p>
+        <p><strong>Location</strong><br>Tecate, México</p>
+        <p><strong>Office</strong><br>Estudio Santander&Lunaa</p>
+        <p><strong>Role</strong><br>Architect</p>
+        <p><strong>Tools</strong><br>Autocad, Rhino, Adobe Ps, Ai, Id, Excel</p>
+        <p><strong>Status</strong><br>Ongoing</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 11: Proposal: Mexico Pavilion ────── -->
+  <div id="project11-page" class="page hidden">
+    <p class="page-title">Proposal: Mexico Pavilion</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/pav-comp/01_pages-to-jpg-0001.jpg" alt="Proposal: Mexico Pavilion — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/pav-comp/01_pages-to-jpg-0002.jpg" alt="Proposal: Mexico Pavilion — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/pav-comp/01_pages-to-jpg-0003.jpg" alt="Proposal: Mexico Pavilion — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/pav-comp/01_pages-to-jpg-0004.jpg" alt="Proposal: Mexico Pavilion — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Proposal: Mexico Pavilion</strong></p>
+        <p>This pavilion serves as an operational diagram. Architecture has always engaged with available
+          technologies shaped by a cosmological imaginary—today, the planetary imaginary: a global
+          infrastructure (satellites, data centers, submarine cables, ports) that allows us to read our
+          territory and future. These sensory apparatuses construct reality rather than merely
+          representing it. However, this infrastructure carries asymmetrical social and spatial
+          consequences, particularly for the Global South, which bears its environmental and social costs.
+          Drawing on the architectural concept of poché—the unused space within walls, the void, the
+          unsaid—the project identifies a "gap" or "black box" of computation. Informed by Ramón Amaro's
+          theory of technological marginalization, this gap becomes a site of possibility: to delineate
+          erased stories, invisibilized worlds, and alternative imaginaries. The pavilion delineates in
+          its pochés the potential for technodiversity and asymmetrical practices, guiding us toward
+          constructing other worlds beyond existing power dynamics.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2024</p>
+        <p><strong>Location</strong><br>México</p>
+        <p><strong>Office</strong><br>Estudio Santander&Lunaa</p>
+        <p><strong>Role</strong><br>Architect</p>
+        <p><strong>Tools</strong><br>Rhino, CautCad, Adobe Ps, AI, Id</p>
+        <p><strong>Status</strong><br>Completed at National Competition</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 12: A Story of Fluid Kinship ─────── -->
+  <div id="project12-page" class="page hidden">
+    <p class="page-title">A Story of Fluid Kinship</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mask/06_page-0001.jpg" alt="A Story of Fluid Kinship — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mask/06_page-0002.jpg" alt="A Story of Fluid Kinship — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mask/06_page-0003 (2).jpg" alt="A Story of Fluid Kinship — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/mask/06_page-0004.jpg" alt="A Story of Fluid Kinship — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>A Story of Fluid Kinship:
+        <span style="font-style:italic;color:#585858;font-size:0.9em;">Rethinking Our Connection with Water</span></strong>
+        <br/></p>
+        <p>Speculative project, originating from a 2020 mask-design course on the Digital
+          Futures, draws on Astrida Neimanis's hydrofeminism to rethink water not as a resource
+          but as a vital component of identity and memory. Set in 2100, with rising sea levels transforming
+          familiar landscapes, the project imagines a biological outgrowth—a hybrid body formed from
+          selected waters sourced from our organisms: Primary Waters
+                  <span style="font-style:italic;color:#585858;font-size:0.9em;">(ancestral)</span>, Original Waters
+          <span style="font-style:italic;color:#585858;font-size:0.9em;">(birth)</span>, and Inner Water
+          <span style="font-style:italic;color:#585858;font-size:0.9em;">(information technology)</span>.
+        </p>
+        <p>A mask evolves from water as an information medium, embodying a fantastical, purplish, humanoid
+          being resembling a nymph. Within its biological sprouts lies encoded genetic data, granting
+          access to lost histories obliterated by catastrophic flooding. Entities serve both
+          respiratory functions and as information units, transforming water blobs into data. The project
+          explores how memory, history, and technology can be redefined through our relationship with
+          water, urging reconsideration of our place within the ecological continuum.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2024</p>
+        <p><strong>Location</strong><br>Tijuana, México</p>
+        <p><strong>Based on</strong><br>Digital Futures: Bio-Inspired Mask Design Workshop (2020)</p>
+        <p><strong>Workshop Leader</strong><br>Behnaz Farahi</p>
+        <p><strong>Tools</strong><br>Rhino, Grasshopper, Adobe Photoshop</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 13: AI Architecture Studies ──────── -->
+  <div id="project13-page" class="page hidden">
+    <p class="page-title">AI Architecture Studies</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-ai/01.png" alt="AI Architecture Studies — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-ai/02.png" alt="AI Architecture Studies — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-ai/03.png" alt="AI Architecture Studies — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-ai/04.png" alt="AI Architecture Studies — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-ai/05.png" alt="AI Architecture Studies — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-ai/00.png" alt="AI Architecture Studies — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>AI Architecture Studies</strong></p>
+        <p>A speculative exploration of AI-generated imagery as a tool for architectural ideation. 
+          This project investigates how MidJourney—a text-to-image generative model—can expand the 
+          boundaries of architectural form, spatial composition, and imaginative worlds. Through 
+          iterative prompting and curation, the work probes questions of style, typology, materiality, 
+          and atmosphere beyond conventional design workflows. It examines AI's capacity to produce 
+          unexpected spatial configurations, hybrid morphologies, and alternate realities, positioning 
+          machine learning not as a replacement for human creativity but as a collaborative partner in 
+          envisioning new architectural imaginaries. The outcome is a visual archive of speculative 
+          spaces that challenge normative approaches to form and representation.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2018–2025</p>
+        <p><strong>Location</strong><br>Tijuana, México</p>
+        <p><strong>Role</strong><br>Architect</p>
+        <p><strong>Tools</strong><br>MidJourney</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 14: INTIMA ───────────────────────── -->
+  <div id="project14-page" class="page hidden">
+    <p class="page-title">INTIMA</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <div class="proj-video-ratio">
+              <iframe
+                src="https://player.vimeo.com/video/1047216775?h=04cc27712f&badge=0&autopause=0&player_id=0&app_id=58479"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="INTIMA - City X China">
+              </iframe>
+            </div>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/intima/03_page-0001.jpg" alt="INTIMA — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/intima/03_page-0002.jpg" alt="INTIMA — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>INTIMA</strong></p>
+        <p>Intima de-centers the privileged human and human-centric design logics, instead exploring
+          territorial and morphological reorderings based on degrees of intimate-ness among xeno-entities
+          (vulnerable non-human and human others). Drawing on Helen Hester's notion of autoselected groups
+          beyond family—kinship, friendship, mates, lovers—Intima asks what kind of city can be organized
+          from these xeno-families.</p>
+        <p>Using co-evolutionary algorithms within the TIOC system, the project generates map clusterings
+          of intimate-ness intensities, serving as open guidelines for reordering territories and
+          morphologies under the terms of each xeno-entity. This analysis identifies which infrastructures
+          must change—and which should remain. Intima ultimately re-visions urban planning and
+          architecture to provide safe infrastructures for the flourishing of intimate relations between
+          xeno-entities.</p>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2021</p>
+        <p><strong>Location</strong><br>Venice, Italy
+          <span style="font-style:italic;color:#585858;font-size:0.9em;">(Virtual due to covid-19).</span>
+        </p>
+        <p><strong>Role</strong><br>Team Leader and Creative Director</p>
+        <p><strong>Tools</strong><br>Rhino, Adobe Packaging, Grasshopper, Video Edition</p>
+        <p><strong>Collaboration</strong><br>Estudio Santander&Lunaa and RMIT (Biennale Sessions)</p>
+        <p><strong>Status</strong><br>Presented</p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 15: YEU ──────────────────────────── -->
+  <div id="project15-page" class="page hidden">
+    <p class="page-title">YEU</p>
+    <div class="three-col">
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <div class="proj-video-ratio">
+              <iframe
+                src="https://player.vimeo.com/video/1047217052?h=1b77a67fc0&badge=0&autopause=0&player_id=0&app_id=58479"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                title="YEU">
+              </iframe>
+            </div>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/yeu/04_page-0001.jpg" alt="YEU — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/yeu/04_page-0002.jpg" alt="YEU — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>YEU</strong></p>
+        <p>有[yeu] designs protocols to restructure territories by identifying diverse modes of coexistence
+          and de-framing scales of dominion. The term, from ancient Chinese, expresses possession from
+          "possess" to "being"—opposing human-centered property logics of exploitation. Focusing on
+          Lake Baiyangdian (manipulated across dynasties, now fetishized for its green aesthetic),
+          the project detects forms of coexistence to visualize its multiple paths of dominion.</p>
+        <p>It designs algorithmic structures that are not necessarily constructable, but function as
+          guidelines, rules, or temporary laws for territorial organization. 有[yeu] seeks a less
+          fragmented reality without privileges of dominance, revaluing how we operate beyond human
+          existence alone.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2021</p>
+        <p><strong>Location</strong><br>Venice, Italy
+          <span style="font-style:italic;color:#585858;font-size:0.9em;">(Virtual due to covid-19).</span>
+        </p>
+        <p><strong>Role</strong><br>Team Leader and Creative Director</p>
+        <p><strong>Tools</strong><br>Rhino, Adobe Packaging, Grasshopper, Video Edition</p>
+        <p><strong>Collaboration</strong><br>Estudio Santander&Lunaa and RMIT (Biennale Sessions)</p>
+        <p><strong>Status</strong><br>Presented</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 16: VINVISIBLE ───────────────────── -->
+  <div id="project16-page" class="page hidden">
+    <p class="page-title">VINVISIBLE</p>
+    <div class="three-col">
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <div class="proj-video-ratio">
+              <iframe
+                src="https://player.vimeo.com/video/1035784228?h=b237ad1b3b&badge=0&autopause=0&player_id=0&app_id=58479"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                title="VINVISIBLE">
+              </iframe>
+            </div>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/vinvisible/05_page-0001.jpg" alt="VINVISIBLE — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/vinvisible/05_page-0002.jpg" alt="VINVISIBLE — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>VINVISIBLE</strong></p>
+        <p>Description coming soon.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2021</p>
+        <p><strong>Location</strong><br>Venice, Italy
+          <span style="font-style:italic;color:#585858;font-size:0.9em;">(Virtual due to covid-19).</span>
+        </p>
+        <p><strong>Role</strong><br>Team Leader and Creative Director</p>
+        <p><strong>Tools</strong><br>Rhino, Adobe Packaging, Grasshopper, Video Edition</p>
+        <p><strong>Collaboration</strong><br>Estudio Santander&Lunaa and RMIT (Biennale Sessions)</p>
+        <p><strong>Status</strong><br>Presented</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 17: TIOC 2.0 ─────────────────────── -->
+  <div id="project17-page" class="page hidden">
+    <p class="page-title">TIOC 2.0</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc-2/01.jpg" alt="TIOC2.0 — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc-2/02.jpg" alt="TIOC2.0 — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>TIOC 2.0</strong></p>
+        <p>The second iteration of TIOC Think Tank, presented at the Venice Biennale of Architecture 
+          2020-2021 as a continuation from 2018, explores possible logics for architecture and urbanism that 
+          engage with "de-framing" contemporary conditions and objects manifesting "the Same"—a 
+          pseudo-autonomous system that maintains homogenization and cancels out contingency. Xeno-entities 
+          (human and non-human) are proposed as contingencies to the Same, each constructing their own worlds. 
+          Design must reposition itself to detect and advocate for these other worlds, moving beyond 
+          human-centered solutions. The project focuses on re-appropriating technologies, particularly AI, 
+          toward re-visions of co-existence and stealthy tactical approaches for architecture.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2019–2021</p>
+        <p><strong>Location</strong><br>Tijuana, México</p>
+        <p><strong>Role</strong><br>Team Leader and Creative Director</p>
+        <p><strong>Tools</strong><br>Research, Design, and Development</p>
+        <p><strong>Status</strong><br>Presented</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 18: Estación Chabacano ───────────── -->
+  <div id="project18-page" class="page hidden">
+    <p class="page-title">Estación Chabacano</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0001.jpg" alt="Estación Chabacano — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0002.jpg" alt="Estación Chabacano — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0003.jpg" alt="Estación Chabacano — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0004.jpg" alt="Estación Chabacano — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0005.jpg" alt="Estación Chabacano — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0006.jpg" alt="Estación Chabacano — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0007.jpg" alt="Estación Chabacano — Image 7" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0008.jpg" alt="Estación Chabacano — Image 8" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/metro/07_page-0009.jpg" alt="Estación Chabacano — Image 9" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Estación Chabacano</strong></p>
+        <p>This project consists of interventions funded by a bank loan from the Chinese government to
+          implement large-scale display screens around Mexico City Metro stations. Part of the 2019
+          Official Master Plan for the Metro system, the proposal followed extensive research on metro
+          history, public spaces, passenger flow, and peak hours. Chabacano station was selected as the
+          case study, as it serves as an intersection of Lines 2, 8, and 9, connecting four delegations.</p>
+        <p>With official permission, a survey documented the station's three levels: a public library
+          ("Benito Juárez"), a cultural center, an administrative center, and commercial spaces on level
+          +1. The intervention addresses multiple focal points: Inclusivity, Identity Project, Public
+          Spaces for Art and Culture, Sensory Experience, Monetization, Sustainability, Service Spaces,
+          and a modernization initiative promoting intelligent spaces and mass information dissemination.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2019</p>
+        <p><strong>Location</strong><br>Ciudad de México</p>
+        <p><strong>Role</strong><br>Architect Intern</p>
+        <p><strong>Tools</strong><br>GIS, Autocad, Rhino, Adobe Package</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 19: Architecture Visualization ───── -->
+  <div id="project19-page" class="page hidden">
+    <p class="page-title">Architecture Visualization</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/01 LATERAL.png" alt="Architecture Visualization — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/01 TRASERA.png" alt="Architecture Visualization — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/02 TRASERA.png" alt="Architecture Visualization — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/704993244136453.jpg" alt="Architecture Visualization — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/704995635135430.jpg" alt="Architecture Visualization — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/par-01.png" alt="Architecture Visualization — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/res-01.png" alt="Architecture Visualization — Image 7" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arc-vis/res-02.png" alt="Architecture Visualization — Image 8" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Architecture Visualization</strong></p>
+        <p>Description coming soon.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2018–2025</p>
+        <p><strong>Location</strong><br>Tijuana, Mx</p>
+        <p><strong>Role</strong><br>Architect / Visualizer</p>
+        <p><strong>Tools</strong><br>Rhino, Adobe Package</p>
+        <p><strong>Status</strong><br>Ongoing</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ─── PROJECT 20: TIOC ──────────────────────────── -->
+  <div id="project20-page" class="page hidden">
+    <p class="page-title">TIOC</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0000.jpg" alt="TIOC — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0002.jpg" alt="TIOC — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0003.jpg" alt="TIOC — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0004.jpg" alt="TIOC — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0005.jpg" alt="TIOC — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0006.jpg" alt="TIOC — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0007.jpg" alt="TIOC — Image 7" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0008.jpg" alt="TIOC — Image 8" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0009.jpg" alt="TIOC — Image 9" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/tioc/02_page-0010.jpg" alt="TIOC — Image 10" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>TIOC</strong></p>
+        <p>TIOC is a laboratory developing fair cities through rigorous investigation of contemporary
+          conditions, building strategies for communities, NGOs, governments, and corporations facing
+          new technologies. The project delves into algorithmic reality—abstract yet impactful on material
+          reality—proposing an open system that, based on commitments to an ideal, calculates with human
+          intuitive intelligence to enable emancipation infrastructures. The "Temporary Infrastructure of
+          Commitments" is a transformative framework for governance and urban design that transcends
+          conventional paradigms by identifying fissures within existing systems. Using Blockchain 2.0,
+          it shifts from consensus-based to commitment-based algorithms to decentralize power, reduce
+          polarization, and enhance participation. Commitments function as dynamic, interconnected
+          intentions driving continuous evolution. The adaptive architecture responds in real-time to
+          user interactions, advocating for a radical rethinking of urban planning that prioritizes
+          collective aspirations and emancipatory outcomes toward a more equitable and imaginative future.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2017–2018</p>
+        <p><strong>Location</strong><br>Tijuana, MX / Venice, Italy</p>
+        <p><strong>Role</strong><br>Researcher</p>
+        <p><strong>Tools</strong><br>Rhino, Grasshopper, Adobe Package</p>
+        <p><strong>Status</strong><br>Presented</p>
+      </div>
+    </div>
+  </div>
+
+    <!-- ─── PROJECT 21: Casa Costa Ligur ───── -->
+  <div id="project21-page" class="page hidden">
+    <p class="page-title">Casa Costa Ligur</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/01.png" alt="Casa Costa Ligur — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/02.png" alt="Casa Costa Ligur — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/03.png" alt="Casa Costa Ligur — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/04.png" alt="Casa Costa Ligur — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/05.png" alt="Casa Costa Ligur — Image 5" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/06.png" alt="Casa Costa Ligur — Image 6" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/07.png" alt="Casa Costa Ligur — Image 7" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/08.png" alt="Casa Costa Ligur — Image 8" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/09.jpg" alt="Casa Costa Ligur — Image 9" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/casa-costaligur/10.png" alt="Casa Costa Ligur — Image 10" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Architecture Visualization</strong></p>
+        <p>A residential remodel project in Tijuana, developed independently as a freelance commission. 
+          The intervention focused on reconfiguring interior spaces to improve functionality, natural 
+          light, and material coherence within an existing house. Working within a modest budget and 
+          local construction constraints, the project prioritized adaptive reuse of existing elements, 
+          strategic demolition, and the integration of simple, durable finishes. The outcome balances 
+          practical needs with a restrained spatial quality, demonstrating how freelance, small-scale 
+          interventions can meaningfully transform everyday domestic environments.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2018–2019</p>
+        <p><strong>Location</strong><br>Tijuana, Mx</p>
+        <p><strong>Role</strong><br>Architect</p>
+        <p><strong>Tools</strong><br>Autocad, Rhino, Adobe Ps, Ai, Id</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+    <!-- ─── PROJECT 22: Architectural Drafting ───── -->
+  <div id="project22-page" class="page hidden">
+    <p class="page-title">Architectural Drafting</p>
+    <div class="three-col">
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <div class="col-scroll">
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-draft/draft-01.png" alt="Architectural Drafting — Image 1" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-draft/draft-02.png" alt="Architectural Drafting — Image 2" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-draft/draft-03.png" alt="Architectural Drafting — Image 3" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+          <div class="proj-media-wrap">
+            <img class="proj-img" src="images/projects/arch-draft/draft-04.png" alt="Architectural Drafting — Image 4" />
+            <button class="proj-expand-btn" aria-label="Expand image" onclick="openLightbox(this)">&#10530;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Architecture Visualization</strong></p>
+        <p>A freelance architectural drafting project for a residential remodel in Tijuana. The work 
+          included producing construction drawings, floor plan reconfigurations, elevation updates, and 
+          detail sketches to guide the renovation of an existing house. Drafting tasks involved documenting 
+          as-built conditions, proposing spatial reorganizations, and coordinating with local construction 
+          constraints. The drawings served as a communication tool between the freelancer and on-site 
+          builders, ensuring clarity for structural modifications, window placements, and finish 
+          installations. This project highlights how precise architectural drafting enables small-scale, 
+          budget-conscious remodels to achieve functional and spatial improvements.</p>
+      </div>
+      <div class="col">
+        <p class="col-heading"></p>
+        <p><strong>Year</strong><br>2020</p>
+        <p><strong>Location</strong><br>Tijuana, Mx</p>
+        <p><strong>Role</strong><br>Architect</p>
+        <p><strong>Tools</strong><br>Autocad, Rhino, Adobe Ps, Ai, Id</p>
+        <p><strong>Status</strong><br>Completed</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- =============================================
+       LIGHTBOX OVERLAY
+       ============================================= -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image expanded view">
+    <button id="lightbox-close" aria-label="Close lightbox">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+
+  <!-- =============================================
+       JAVASCRIPT — SPA NAVIGATION + LIGHTBOX
+       ============================================= -->
+  <script>
+
+    /* ─────────────────────────────────────────────
+       SECTION REGISTRY
+    ───────────────────────────────────────────── */
+    var SECTIONS = {
+      index:     'index-page',
+      cv:        'cv-page',
+      contact:   'contact-page',
+      project1:  'project1-page',
+      project2:  'project2-page',
+      project3:  'project3-page',
+      project4:  'project4-page',
+      project5:  'project5-page',
+      project6:  'project6-page',
+      project7:  'project7-page',
+      project8:  'project8-page',
+      project9:  'project9-page',
+      project10: 'project10-page',
+      project11: 'project11-page',
+      project12: 'project12-page',
+      project13: 'project13-page',
+      project14: 'project14-page',
+      project15: 'project15-page',
+      project16: 'project16-page',
+      project17: 'project17-page',
+      project18: 'project18-page',
+      project19: 'project19-page',
+      project20: 'project20-page',
+      project21: 'project21-page',
+      project22: 'project22-page',
+    };
+
+    function getEl(id) {
+      return document.getElementById(id);
+    }
+
+    function hideAllSections() {
+      Object.values(SECTIONS).forEach(function(id) {
+        var el = getEl(id);
+        if (el) el.classList.add('hidden');
+      });
+    }
+
+    function showSection(sectionKey, pushToHistory) {
+      hideAllSections();
+
+      var targetId = SECTIONS[sectionKey];
+      if (targetId) {
+        var el = getEl(targetId);
+        if (el) el.classList.remove('hidden');
+      }
+
+      window.scrollTo(0, 0);
+
+      if (pushToHistory !== false) {
+        window.history.pushState(
+          { section: sectionKey },
+          '',
+          '#' + sectionKey
+        );
+      }
+    }
+
+    window.addEventListener('popstate', function(e) {
+      var section = (e.state && e.state.section) ? e.state.section : 'index';
+      showSection(section, false);
+    });
+
+    // Boot straight to index
+    showSection('index', false);
+    window.history.replaceState({ section: 'index' }, '', '#index');
+
+    getEl('btn-land').addEventListener('click', function() {
+      showSection('index', true);
+    });
+    getEl('btn-back').addEventListener('click', function() {
+      window.history.back();
+    });
+
+    getEl('link-cv').addEventListener('click', function(e) {
+      e.preventDefault();
+      showSection('cv', true);
+    });
+    getEl('btn-contact').addEventListener('click', function() {
+      showSection('contact', true);
+    });
+
+    document.querySelectorAll('#project-list a[data-project]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var num = this.getAttribute('data-project');
+        showSection('project' + num, true);
+      });
+    });
+
+    var hoverIcon    = getEl('proj-hover-icon');
+    var hoverPreview = getEl('proj-hover-preview');
+    var hoverLabel   = getEl('proj-hover-label');
+
+    document.querySelectorAll('#project-list a[data-project]').forEach(function(link) {
+      link.addEventListener('mouseenter', function() {
+        var img   = this.getAttribute('data-image') || '';
+        var label = this.getAttribute('data-label') || '';
+        hoverPreview.src = img;
+        hoverPreview.alt = label;
+        hoverLabel.textContent = label;
+        hoverIcon.classList.add('visible');
+      });
+      link.addEventListener('mouseleave', function() {
+        hoverIcon.classList.remove('visible');
+      });
+    });
+
+    var lightbox      = getEl('lightbox');
+    var lightboxImg   = getEl('lightbox-img');
+    var lightboxClose = getEl('lightbox-close');
+
+    function openLightbox(btn) {
+      var img = btn.previousElementSibling;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      lightboxImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    lightbox.addEventListener('click', function(e) {
+      if (e.target !== lightboxImg) closeLightbox();
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+  </script>
+
+</body>
+</html>
