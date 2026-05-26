@@ -218,11 +218,13 @@
       opacity: 0;
       transition: opacity 0.15s ease;
     }
-    #project-list li.proj-coming-soon-li {
-      pointer-events: auto;
-    }
-    #project-list li.proj-coming-soon-li:hover .proj-coming-soon-wrap::after {
+        #project-list li.proj-coming-soon-li:hover .proj-coming-soon-wrap::after {
       opacity: 0.5;
+    }
+
+    /* Hide coming-soon items completely until ready */
+    .proj-coming-soon-li {
+      display: none;
     }
 
     /* =============================================
@@ -453,12 +455,14 @@
         <p>Architect, designer, and artist — border girl at heart.</p>
         <p>I blend web development, data visualization, and creative direction with AI agents and automation.</p>
         <p>Based between Barcelona and Tijuana. Led multidisciplinary teams across Europe, North America, and South America.</p>
+            <a href="mailto:aleriverazz@outlook.com" style="font-style:italic; font-size:11px; color:#888;">[Email]</a>
 
         <div id="proj-hover-icon" aria-hidden="true">
           <img id="proj-hover-preview" src="" alt="" />
           <span id="proj-hover-label"></span>
         </div>
       </div>
+
 
       <div class="col">
         <p class="col-heading"></p>
@@ -511,7 +515,7 @@
         <p>Born 1995, Tijuana, México.</p>
         <p>Currently finishing a Master in Design for Emergent Futures at IAAC and Elisava (Barcelona), I'm a 
           design researcher and architect who blends AI, data visualization, and web development with the 
-          materiality of the built environment — open to collaborations, research, and work opportunities. </p>
+          materiality of the built environment — open to collaborations, research, and full-time opportunities. </p>
         <p>Nationality: Mexican<br>Languages: Spanish, English</p>
       </div>
 
@@ -563,11 +567,6 @@
             Assistant Professor<br>
             Universidad Iberoamericana, Tijuana, México<br>
             <span style="font-style:italic;color:#888;font-size:0.9em;">Assistant Professor at Architecture Studio classes, supporting students in design development, research and graphic production, and final presentations. Also led workshops on design.</span>
-          </p>
-          <p>
-            <strong>2024</strong><br>
-            Logistics & Inventory Coordinator<br>
-            <span style="font-style:italic;color:#888;font-size:0.9em;">Designed and maintained inventory system for hundreds of furniture and educational assets. Developed protocols for receiving, storage, and distribution. Managed budgets and implementation timelines using advanced Excel spreadsheets.</span>
           </p>
           <p>
             <strong>2017–2018 & 2019–2021</strong><br>

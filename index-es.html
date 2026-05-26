@@ -218,11 +218,13 @@
       opacity: 0;
       transition: opacity 0.15s ease;
     }
-    #project-list li.proj-coming-soon-li {
-      pointer-events: auto;
-    }
-    #project-list li.proj-coming-soon-li:hover .proj-coming-soon-wrap::after {
+        #project-list li.proj-coming-soon-li:hover .proj-coming-soon-wrap::after {
       opacity: 0.5;
+    }
+
+    /* Hide coming-soon items completely until ready */
+    .proj-coming-soon-li {
+      display: none;
     }
 
     /* =============================================
@@ -478,6 +480,7 @@
       Combino desarrollo web, visualización de datos y dirección creativa con agentes de IA y automatización.<br><br>
       Entre Barcelona y Tijuana. He liderado equipos multidisciplinarios en Europa, América del Norte y Sudamérica .
     </p>
+                <a href="mailto:aleriverazz@outlook.com" style="font-style:italic; font-size:11px; color:#888;">[Email]</a>
 
     <div class="three-col">
 
@@ -495,9 +498,10 @@
 
       <div class="col" id="index-col2-hover-container" style="display:flex; flex-direction:column; min-height:70vh;">
         <p class="col-heading"></p>
-        <p>Arquitecta, diseñadora y artista — niña de la frontera de corazón.</p>
+        <p>Arquitecta, diseñadora y artista — chica de  frontera.</p>
         <p>Combino desarrollo web, visualización de datos y dirección creativa con agentes de IA y automatización.</p>
-        <p>Entre Barcelona y Tijuana. He liderado equipos multidisciplinarios en Europa, América del Norte y América del Sur.</p>
+        <p>Entre Barcelona y Tijuana. He liderado equipos multidisciplinarios en Europa, América del Norte y Sudamérica.
+            <a href="mailto:aleriverazz@outlook.com" style="font-style:italic; font-size:11px; color:#888;">[Email]</a> </p>
 
         <div id="proj-hover-icon" aria-hidden="true">
           <img id="proj-hover-preview" src="" alt="" />
@@ -510,7 +514,7 @@
         <p>PROYECTOS</p>
         <div class="col-scroll">
           <ul class="project-list" id="project-list">
-            <li><a href="#" data-project="1"  data-label="Fog Harvest"             data-image="images/projects/fog/Screenshot 2026-05-24 193120.png"><span class="proj-num">01</span>2026 — Cosecha de Niebla — Tijuana, Mx / Barcelona, Esp</a></li>
+            <li><a href="#" data-project="1"  data-label="Fog Harvest"             data-image="images/projects/fog/Screenshot 2026-05-24 193120.png"><span class="proj-num">01</span>2026 — Fog Harvest — Tijuana, Mx / Barcelona, Esp</a></li>
             <li class="proj-coming-soon-li"><span class="proj-coming-soon-wrap"><span class="proj-coming-soon"><span class="proj-num">02</span>2026 — WIP: Diseño Web — Cork, Irlanda / Barcelona, Esp</span></span></li>
             <li class="proj-coming-soon-li"><span class="proj-coming-soon-wrap"><span class="proj-coming-soon"><span class="proj-num">03</span>2026 — WIP: Monster Fantasies — Barcelona, Esp</span></span></li>
             <li class="proj-coming-soon-li"><span class="proj-coming-soon-wrap"><span class="proj-coming-soon"><span class="proj-num">04</span>2026 — Museografía MDEF Fest — Barcelona, Esp</span></span></li>
@@ -605,11 +609,6 @@
             Profesora Asistente<br>
             Universidad Iberoamericana, Tijuana, México<br>
             <span style="font-style:italic;color:#888;font-size:0.9em;">Profesora Asistente en talleres de Arquitectura, apoyando a estudiantes en el desarrollo del diseño, investigación y producción gráfica, y presentaciones finales. También dirigí talleres de diseño.</span>
-          </p>
-          <p>
-            <strong>2024</strong><br>
-            Coordinadora de Logística e Inventario<br>
-            <span style="font-style:italic;color:#888;font-size:0.9em;">Diseñé y mantuve un sistema de inventario para cientos de activos de mobiliario y educativos. Desarrollé protocolos de recepción, almacenamiento y distribución. Gestioné presupuestos y cronogramas de implementación con hojas de cálculo Excel avanzadas.</span>
           </p>
           <p>
             <strong>2017–2018 & 2019–2021</strong><br>
